@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Stack;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -29,7 +30,11 @@ public class Scooby extends Application {
 	
 	@Override
 	public void init() throws Exception {
-		File[] allFiles = new File("./villainVideos/").listFiles();
+		File file = new File("./videos/");
+		if(file == null) {
+			System.out.println("No videos folder found");
+		}
+		File[] allFiles = file.listFiles();
 		videos = villainVideoList(allFiles);
 	}
 
@@ -69,7 +74,19 @@ public class Scooby extends Application {
 		if(currentVideos==null || currentVideos.isEmpty()) {
 			resetVideos();
 		}
-		return currentVideos.pop();
+		File videoToPlay = null;
+		if(ThreadLocalRandom.current().nextInt(100) < 3) {
+			videoToPlay = easterEggVideo();
+		}
+		if(videoToPlay == null) {			
+			videoToPlay =  currentVideos.pop();
+		}
+		return videoToPlay;
+	}
+
+	private File easterEggVideo() {
+		File[] allFiles = new File("./easterEgg/").listFiles();
+		return allFiles[0];
 	}
 
 	private static MediaPlayer getBaselineVideo() {
