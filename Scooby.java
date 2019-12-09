@@ -12,6 +12,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class Scooby extends Application {
@@ -25,6 +26,7 @@ public class Scooby extends Application {
 	static MediaPlayer randomPlayer;
 	List<File> videos;
 	Stack<File> currentVideos;
+	final int EASTER_EGG_PERCENT = 3;
 
 	
 	
@@ -44,7 +46,9 @@ public class Scooby extends Application {
 		StackPane root = new StackPane();
 		MediaView mediaView = new MediaView(getBaselineVideo());
 		root.getChildren().add(mediaView);
-		Scene scene = new Scene(root, 1024, 768);
+		Scene scene = new Scene(root, 1024, 768, Color.BLACK);
+		mediaView.fitWidthProperty().bind(scene.widthProperty());
+		mediaView.fitHeightProperty().bind(scene.heightProperty());
 
 		scene.addEventFilter(KeyEvent.KEY_TYPED, keyEvent -> {
 			if (!Scooby.playingRandom) {
@@ -75,11 +79,10 @@ public class Scooby extends Application {
 			resetVideos();
 		}
 		File videoToPlay = null;
-		if(ThreadLocalRandom.current().nextInt(100) < 3) {
+		if(ThreadLocalRandom.current().nextInt(100) < EASTER_EGG_PERCENT) {
 			videoToPlay = easterEggVideo();
-		}
-		if(videoToPlay == null) {			
-			videoToPlay =  currentVideos.pop();
+		} else {			
+			videoToPlay = currentVideos.pop();
 		}
 		return videoToPlay;
 	}
