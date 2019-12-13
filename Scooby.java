@@ -81,7 +81,8 @@ public class Scooby extends Application {
 		File videoToPlay = null;
 		if(ThreadLocalRandom.current().nextInt(100) < EASTER_EGG_PERCENT) {
 			videoToPlay = easterEggVideo();
-		} else {			
+		} 
+		if(videoToPlay == null){ //no easter egg			
 			videoToPlay = currentVideos.pop();
 		}
 		return videoToPlay;
@@ -89,6 +90,8 @@ public class Scooby extends Application {
 
 	private File easterEggVideo() {
 		File[] allFiles = new File("./easterEgg/").listFiles();
+		if(allFiles.length==0)
+			return null;
 		return allFiles[0];
 	}
 
@@ -103,8 +106,9 @@ public class Scooby extends Application {
 	}
 
 	private MediaPlayer getRandomVideo(MediaView mediaView) {
+		File nextVideo = nextVideo();
 		Scooby.randomPlayer = new MediaPlayer(
-				new Media(Scooby.class.getResource(nextVideo().getPath()).toExternalForm()));
+				new Media(Scooby.class.getResource(nextVideo.getPath()).toExternalForm()));
 		randomPlayer.setOnEndOfMedia(new Runnable() {
 			@Override
 			public void run() {
