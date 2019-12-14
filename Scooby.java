@@ -100,6 +100,7 @@ public class Scooby extends Application {
 			Scooby.baselinePlayer = new MediaPlayer(
 					new Media(Scooby.class.getResource("baseline.mp4").toExternalForm()));
 			Scooby.baselinePlayer.setCycleCount(MediaPlayer.INDEFINITE);
+			Scooby.baselinePlayer.setAutoPlay(true);
 		}
 		return Scooby.baselinePlayer;
 
